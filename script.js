@@ -20,63 +20,91 @@ function getComputerChoice()
   return computerChoice;
 } 
 
-// User choice function
-function getHumanChoice()
-{
-    let humanChoice = prompt("Press 1 for Rock, 2 for Paper, 3 for Scissors");
-    return parseInt(humanChoice);
-}
 
-
-//Main play game function (5 rounds)
+//Main play game function
 function playGame()
 {
     // Variables for Game score
     let humanScore = 0;
     let computerScore = 0;
 
-    // Call round play function 5 times    
-    for(let i=1; i<=5; i++)
-    {
-        const humanSelection = getHumanChoice();
-        const computerSelection = getComputerChoice();
-        playRound(humanSelection, computerSelection);
+    // DOM variables for the buttons
+    let rockBtn = document.querySelector(".rockBtn");
+    let paperBtn = document.querySelector(".paperBtn");
+    let scissorBtn = document.querySelector(".scissorBtn");
+
+    // Event listeners for the buttons
+    rockBtn.addEventListener('click', () => {
+      const computerSelection = getComputerChoice();
+      playRound(1, computerSelection);
+    })
+    
+    paperBtn.addEventListener('click', () => {
+      const computerSelection = getComputerChoice();
+      playRound(2, computerSelection);
+    })
+    
+    scissorBtn.addEventListener('click', () => {
+      const computerSelection = getComputerChoice();
+      playRound(3, computerSelection);
+    })
+
+    // Variable to dislay results to the web page
+    let resultDiv = document.querySelector(".results");
+
+    // function to append results to the web page
+    function appendResult(result){
+      let p = document.createElement("p");
+      let text = document.createTextNode(result);
+      p.appendChild(text);
+      resultDiv.appendChild(p);
     }
 
-    if(humanScore === computerScore)
-        console.log('The game is tied');
-    else if(humanScore > computerScore)
-        console.log('The user wins');
-    else
-        console.log('The computer wins')
+    if (humanScore > computerScore) 
+      appendResult("The user wins");
+    else if(humanScore < computerScore)
+      appendResult("The computer wins");
+    
         
     
     // Single round play function
     function playRound(humanChoice, computerChoice) {
       if (humanChoice === 1 && computerChoice === 2) {
-        console.log(youLose);
+        appendResult(youLose);
         computerScore++;
       } else if (humanChoice === 1 && computerChoice === 3) {
-        console.log(youWin);
+        appendResult(youWin);
         humanScore++;
       } else if (humanChoice === 2 && computerChoice === 3) {
-        console.log(youLose);
+        appendResult(youLose);
         computerScore++;
       }
 
       if (computerChoice === 1 && humanChoice === 2) {
-        console.log(youWin);
+        appendResult(youWin);
         humanScore++;
       } else if (computerChoice === 1 && humanChoice === 3) {
-        console.log(youLose);
+        appendResult(youLose);
         computerScore++;
       } else if (computerChoice === 2 && humanChoice === 3) {
-        console.log(youWin);
+        appendResult(youWin);
         humanScore++;
       }
 
-      if (computerChoice === humanChoice) console.log(tie);
+      if (computerChoice === humanChoice) 
+        appendResult(tie);
+
+      appendResult(`User Score: ${humanScore}`);
+      appendResult(`Computer Score: ${computerScore}`)
+
+      if(humanScore === 5)
+        appendResult('User Wins the game');
+      else if(computerScore === 5)
+        appendResult('Computer wins the game');
+        
     }
+
+    
     
 }
 
